@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
+	
+	<title>BEAR CAMERAS</title><meta name="GENERATOR" content="OpenOffice.org 1.1.0  (Win32)">
+	<meta name="AUTHOR" content="Peter Reintjes">
+	<meta name="CREATED" content="20040918;12263800">
+	<meta name="CHANGEDBY" content="Peter Reintjes">
+	<meta name="CHANGED" content="20051114;15053923">
+<style>
+body   {  margin-left: 130; margin-right: 130; }
+
+</style></head>
+
+<body dir="ltr" lang="en-US">
+<p>
+<font size="+2">
+<!--#include virtual="../../navigation.html" --> 
+
+</font></p><center>
+<h1><font size="+2">Bear Cam</font></h1>
+<h2><font size="+2">New Camera #2 in Bear Yard<br>
+<a href="http://www.supercircuits.com/Security-Cameras/PTZ-Security-Cameras/PTZPZ6">Drop-in Pelco Replacement</a>
+</font></h2>
+
+<font size="+2">The new Bear Camera controller uses a 20Mhz PIC to generate the 
+the Pelco Protocol commands at 2400 baud.  The Wolf cameras
+use a 4Mhz PIC (which just barely had enough speed to support 2400 baud),
+while the Lemur Cam will be a 20Mhz PIC in order to generate the
+COHU protocol at 9600 baud.
+<font color="#ee5555">So much for uniformity.</font>
+</font><hr>
+<h2><font size="+2">Weird new Hardware Glitch</font></h2>
+<center>
+<font size="+2"><img src="drivers.jpg">
+</font><p>
+<font size="+2">Due to the long wires (100+ yards to camera #2) and
+the higher impedance (20K ohms rather than 3k ohms) of the
+<a href="http://www.supercircuits.com/Security-Cameras/PTZ-Security-Cameras/PTZPZ6" target="_blank">new SuperCircuits cameras</a>, connecting the twisted pairs
+in parallel causes the system to fail.  Either camera 
+connected alone will get a readable signal, but when&nbsp;both camera connections are in parallel, the reflections on
+the extra wiring cause the signal to fail to reach either
+camera.  
+</font></p><p>
+<font size="+2">Therefore, we simply added a pair of inverter/drivers
+for each pair.  This works fine.
+
+I'm guessing that adding a 4.7K resistor at the end of each
+pair would also work, but that would involve getting into 
+the bear yard, so we went with this for now.
+
+
+
+</font></p><hr>
+<h2><font size="+2">Software</font></h2>
+</center>
+<font size="+2"> </font><ul>
+<font size="+2">  <li>
+   <a href="main.c">MAIN.C (Pelco Bear Camera Control)</a>
+  </li>
+  <li>
+   <a href="iserial.c">ISERIAL.C (generate serial communication signals)</a>
+  </li>
+  <li>
+   <a href="pelco.c">PELCO.C (detect buttons / generate commands)</a>
+  </li>
+  <li>
+   <a href="camera.h">CAMERA.H (global variables, subroutine prototypes)</a>
+  </li>
+  <li>
+   <a href="pelco.h">PELCO.H (Protocol, Camera, and Button definitions</a>
+  </li>
+ </font></ul>
+<p>
+
+</p><ol>
+<li><font size="+2">Turn on PICStart Plus Programmer</font></li>
+<li><font size="+2">Connect serial cable between PICStart Plus and computer</font></li>
+<li><font size="+2">Place <b>16F84A-20 E/P</b> in PICStart Plus socket</font></li>
+<li><font size="+2">Open Folder <b>C:/Apache2/Museum/Camera/Bear</b>
+</font></li><li><font size="+2">Open Workspace <a href="BearCam.mcp">BearCam.mcp</a> in
+<a href="/Museum/Parts/Doc/MPLAB.pdf">MPLAB</a></font></li>
+<li><font size="+2">Enable Programmer with <em>Programmer -&gt; Enable</em></font></li>
+<li><font size="+2">Recompile with <em>Project -&gt; Clean</em>, then <em>Project -&gt; Build</em></font></li>
+<li><font size="+2">Load program into PIC with <em>Programmer -&gt; Program</em></font></li>
+
+<center>
+<hr>
+<h2><font size="+2">Hardware</font></h2>
+</center>
+
+<font size="+2"> </font><ul>
+<font size="+2">  <li>
+   <a href="BearPIC.JPG">Bear Cam PIC schematic</a>
+  </li>
+  <li>
+   <a href="/Museum/Parts/Doc/PIC16F84A.JPG">16F84A-XX Microcontroller IC</a>
+  </li>
+  <li>
+   <a href="/Museum/Parts/Doc/PIC16F84AWiring.JPG">Generic Wiring diagram for Micro-Controller</a>
+  </li>
+ </font></ul>
+<pre>
+
+</pre>
+<hr size="4" width="600">
+<h1><font size="+2">Old BearCam Configuration</font></h1>
+<p>
+<font size="+2">The old BearCam configuration consisted of:
+</font></p><ol>
+<li>
+<font size="+2">Analog Joystick
+</font></li>
+<li>
+<font size="+2">LM399 Quad Comparator circuit to digitize analog joystick
+</font></li>
+<li>
+<font size="+2"><a href="images/PLC.jpg">
+T100MD+ PLC
+</a>
+</font></li>
+<li>
+<font size="+2"><a href="images/videoswitch.jpg">
+Everplex 4CQ Video Switcher</a></font></li>
+<li>
+<font size="+2"> <a href="images/Relays.jpg">
+RS-485 Relay Board
+  </a>
+</font></li>
+<li>
+<font size="+2"> <a href="images/surge.jpg">
+Surge Protection for RS-485
+  </a>
+</font></li>
+</ol>
+<hr size="4" width="600">
+<h1><font size="+2">New BearCam Configuration</font></h1>
+<p>
+</p><ol>
+<li>
+<font size="+2">Four-switch "Digital" Joystick
+</font></li>
+<li>
+<font size="+2">Single PC board with:
+</font><ul>
+<li><font size="+2"><b>16F84A-20 E/P</b> PIC Microcontroller</font></li>
+<li><font size="+2">Aromat <b>DS2E-ML2-DC5V</b> latching relay</font></li>
+</ul>
+</li>
+<li>
+<font size="+2"> <a href="images/surge.jpg">
+Surge Protection for RS-485
+  </a>
+</font></li>
+</ol>
+
+<font size="+2">   </font>
+  
+ </ol></center></body></html>
